@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Recommendations</title>
+</head>
+<body>
+    <h1>Recommended Cities</h1>
+    <ul>
+        {% for index, recommendation in recommendations.iterrows() %}
+            <li>{{ recommendation['City'] }} </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

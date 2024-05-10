@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>City Recommendations</title>
+    <script>
+        function updateCities() {
+            var district = document.getElementById("currently_living_district").value;
+            var citySelect = document.getElementById("currently_living_city");
+            var cities = {{ districts_to_cities | tojson }};
+            citySelect.innerHTML = "";
+            cities[district].forEach(function(city) {
+                var option = document.createElement("option");
+                option.text = city;
+                option.value = city;
+                citySelect.add(option);
+            });
+        }
+        function updatelastCities() {
+        var district = document.getElementById("last_visited_district").value;
+        var citySelect = document.getElementById("last_visited_city");
+        var cities = {{ districts_to_cities | tojson }};
+        citySelect.innerHTML = "";
+        cities[district].forEach(function(city) {
+            var option = document.createElement("option");
+            option.text = city;
+            option.value = city;
+            citySelect.add(option);
+        });
+    }
+    </script>
+    <style>
+        body {
+            background-image: url('/static/bg.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: white;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        form {
+            background-color: white;
+            color: black;
+            margin: 0 auto;
+            width: 50%;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .mb-3 label {
+            margin-bottom: 10px;
+        }
+
+        .mb-3 input,
+        .mb-3 select {
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+            <h1 class="text-center mb-4">Select Your Preferences</h1>
+            <form method="POST">
+                <h2>Currently living city</h2>
+                <div class="mb-3">
+                    <label for="currently_living_district">Select District:</label>
+                    <select id="currently_living_district" name="currently_living_district" onchange="updateCities()" class="form-control">
+                        {% for district in districts %}
+                            <option value="{{ district }}">{{ district }}</option>
+                        {% endfor %}
+                    </select>
+                    <br>
+                    <label for="currently_living_city">Select City:</label>
+                    <select id="currently_living_city" name="currently_living_city" class="form-control">
+                        <!-- Cities will be dynamically populated based on selected district -->
+                    </select>
+                </div>
+                <h2>Last Visited city</h2>
+                <div class="mb-3">
+                    <label for="last_visited_district">Select District:</label>
+                    <select id="last_visited_district" name="last_visited_district" onchange="updatelastCities()" class="form-control">
+                        {% for district in districts %}
+                            <option value="{{ district }}">{{ district }}</option>
+                        {% endfor %}
+                    </select>
+                    <br>
+                    <label for="last_visited_city">Select City:</label>
+                    <select id="last_visited_city" name="last_visited_city" class="form-control">
+                        <!-- Cities will be dynamically populated based on selected district -->
+                    </select>
+                </div>
+                <label>Travel Interests:</label><br>
+                <div class="mb-3">
+                    <input type="hidden" name="Historical" value="off"> <!-- Default value for unchecked -->
+                    <input type="checkbox" id="historical" name="Historical" class="form-check-input">
+                    <label for="historical" class="form-check-label">Historical</label><br>
+                    <input type="hidden" name="Adventure" value="off"> <!-- Default value for unchecked -->
+                    <input type="checkbox" id="adventure" name="Adventure" class="form-check-input">
+                    <label for="adventure" class="form-check-label">Adventure</label><br>
+                    <input type="hidden" name="Nature" value="off"> <!-- Default value for unchecked -->
+                    <input type="checkbox" id="nature" name="Nature" class="form-check-input">
+                    <label for="nature" class="form-check-label">Nature</label><br>
+                    <input type="hidden" name="Joyful" value="off"> <!-- Default value for unchecked -->
+                    <input type="checkbox" id="joyful" name="Joyful" class="form-check-input">
+                    <label for="joyful" class="form-check-label">Joyful</label><br>
+                    <input type="hidden" name="Beach" value="off"> <!-- Default value for unchecked -->
+                    <input type="checkbox" id="beach" name="Beach" class="form-check-input">
+                    <label for="beach" class="form-check-label">Beach</label><br><br>
+                </div>
+                <input type="submit" value="Submit" class="btn btn-primary">
+            </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+</body>
+</html>
