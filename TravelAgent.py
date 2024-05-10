@@ -5,13 +5,13 @@ import requests
 app = Flask(__name__)
 
 # Define your OpenAI API key
-OPENAI_API_KEY = 'Define your OpenAI API key'
+OPENAI_API_KEY = 'sk-proj-qc1bZNcbLsAiB6ka0DBvT3BlbkFJ7jwdX9PE1oN9q2K1OCoZ'
 
 # Define your OpenAI endpoint
 OPENAI_ENDPOINT = 'https://api.openai.com/v1/completions'
 
 
-GOOGLE_PLACES_API_KEY = 'Define your API key'
+GOOGLE_PLACES_API_KEY = 'AIzaSyAuFuvnxW2yew9ikHhR_zb5bBL8UvbRmaU'
 
 # Load the dataset
 data = pd.read_csv("DataSheet1.csv", skipinitialspace=True)
@@ -92,7 +92,7 @@ def index():
                 recommended_cities_with_plan[city] = {'plan': plan, 'hotels': hotels}
 
         print(recommended_cities_with_plan)
-        return render_template('recommendations.html', recommendations=recommended_cities_with_plan)
+        return render_template('recommendations.html', recommendations=recommended_cities_with_plan, living_city=currently_living_city)
     else:
         districts = data['District'].unique()
         cities_by_district = data.groupby('District')['City'].apply(list).to_dict()

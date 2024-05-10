@@ -37,48 +37,70 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="text-center mb-4">Travel Recommendations</h1>
-        
-        {% for city, data in recommendations.items() %}
-        <div class="city-card">
-            <h2>{{ city }}</h2>
-            <h3>Travel Plan:</h3>
-            <ul class="list-group">
-                {% for activity in data['plan'] %}
-                <li class="list-group-item activity">{{ activity }}</li>
-                {% endfor %}
-            </ul>
-            <h3>Hotels:</h3>
-            <div class="map-container">
-                <div id="map_{{ loop.index }}" class="map"></div>
-            </div>
-            <script>
-                function initMap_{{ loop.index }}() {
-                    var mapOptions = {
-                        center: {lat: {{ data['hotels'][0].geometry.location.lat }}, lng: {{ data['hotels'][0].geometry.location.lng }}},
-                        zoom: 12
-                    };
-                    var map_{{ loop.index }} = new google.maps.Map(document.getElementById('map_{{ loop.index }}'), mapOptions);
-                    
-                    var hotels_{{ loop.index }} = {{ data['hotels']|tojson }};
-                    hotels_{{ loop.index }}.forEach(function(hotel) {
-                        var marker = new google.maps.Marker({
-                            position: {lat: hotel.geometry.location.lat, lng: hotel.geometry.location.lng},
-                            map: map_{{ loop.index }},
-                            title: hotel.name
-                        });
-                    });
-                }
-            </script>
-            <script async defer
-                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvU88gp4sE2EBWRjlTs-jzrkeLqb0tgu0&callback=initMap_{{ loop.index }}">
-            </script>
-        </div>
-        {% endfor %}
-    </div>
+<div class="container">
+    <h1 class="text-center mb-4">Travel Recommendations</h1>
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    {% for city, data in recommendations.items() %}
+    <div class="city-card">
+        <h2>{{ city }}</h2>
+        <h3>Travel Plan:</h3>
+        <ul class="list-group">
+            {% for activity in data['plan'] %}
+            <li class="list-group-item activity">{{ activity }}</li>
+            {% endfor %}
+        </ul>
+        <h3>Hotels:</h3>
+        <div class="map-container">
+            <div id="map_{{ loop.index }}" class="map"></div>
+        </div>
+        <script>
+            function initMap_{{ loop.index }}() {
+                var mapOptions = {
+                    center: {lat: {{ data['hotels'][0].geometry.location.lat }}, lng: {{ data['hotels'][0].geometry.location.lng }}},
+                zoom: 12
+            };
+                var map_{{ loop.index }} = new google.maps.Map(document.getElementById('map_{{ loop.index }}'), mapOptions);
+
+                var hotels_{{ loop.index }} = {{ data['hotels']|tojson }};
+                hotels_{{ loop.index }}.forEach(function(hotel) {
+                    var marker = new google.maps.Marker({
+                        position: {lat: hotel.geometry.location.lat, lng: hotel.geometry.location.lng},
+                        map: map_{{ loop.index }},
+                    title: hotel.name
+                });
+                });
+
+                // Add directions
+                var directionsService = new google.maps.DirectionsService();
+                var directionsRenderer = new google.maps.DirectionsRenderer();
+                directionsRenderer.setMap(map_{{ loop.index }});
+
+                var start = "{{ living_city }}"; // Living city
+                var end = "{{ city }}"; // Recommended city
+
+                var request = {
+                    origin: start,
+                    destination: end,
+                    travelMode: 'DRIVING'
+                };
+
+                directionsService.route(request, function(result, status) {
+                    if (status == 'OK') {
+                        directionsRenderer.setDirections(result);
+                    } else {
+                        window.alert('Directions request failed due to ' + status);
+                    }
+                });
+            }
+        </script>
+        <script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvU88gp4sE2EBWRjlTs-jzrkeLqb0tgu0&callback=initMap_{{ loop.index }}">
+        </script>
+    </div>
+    {% endfor %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
