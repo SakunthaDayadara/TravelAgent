@@ -5,13 +5,13 @@ import requests
 app = Flask(__name__)
 
 # Define your OpenAI API key
-OPENAI_API_KEY = 'sk-proj-qc1bZNcbLsAiB6ka0DBvT3BlbkFJ7jwdX9PE1oN9q2K1OCoZ'
+OPENAI_API_KEY = 'Define your OpenAI API key'
 
 # Define your OpenAI endpoint
 OPENAI_ENDPOINT = 'https://api.openai.com/v1/completions'
 
 
-GOOGLE_PLACES_API_KEY = 'AIzaSyAuFuvnxW2yew9ikHhR_zb5bBL8UvbRmaU'
+GOOGLE_PLACES_API_KEY = 'Define your API key'
 
 # Load the dataset
 data = pd.read_csv("DataSheet1.csv", skipinitialspace=True)

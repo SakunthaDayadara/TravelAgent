@@ -31,7 +31,7 @@
         }
 
         .map {
-            height: 300px;
+            height: 600px;
             width: 100%;
         }
     </style>
@@ -49,7 +49,7 @@
             <li class="list-group-item activity">{{ activity }}</li>
             {% endfor %}
         </ul>
-        <h3>Hotels:</h3>
+        <h3>Hotels and Direction From Your City:</h3>
         <div class="map-container">
             <div id="map_{{ loop.index }}" class="map"></div>
         </div>
@@ -94,7 +94,7 @@
             }
         </script>
         <script async defer
-                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDvU88gp4sE2EBWRjlTs-jzrkeLqb0tgu0&callback=initMap_{{ loop.index }}">
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdyDPWRZsITZjsHd-tdZuRk16AFq4ojgk&callback=initMap_{{ loop.index }}">
         </script>
     </div>
     {% endfor %}
